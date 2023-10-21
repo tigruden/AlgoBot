@@ -1,0 +1,12 @@
+{
+    "ConnectionStrings": {
+        "mongodb": "mongodb://localhost:27017",
+        "database": "AlgoBot"
+    },
+    "Exchange": {
+        "Binance": {
+            "ApiKey": "61hHkO6ymn0745ITLx1PbTEqbOLfpcNw9SSaufLq6rV0MRlmoHz2GH4KyCcxzRrC",
+            "ApiSecret": "RWBnHRWraNTxF5DZgeddqNtVXhjUmqsWjJxlzdR7UG56Nee02pzNDJCfr1KvDYEi"
+        }
+    }
+}
