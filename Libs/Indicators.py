@@ -27,6 +27,18 @@ def EMA(_symbol, _interval, _lenght = 20):
     emaValue = ta.ema(df['Close'], length= _lenght)
     return emaValue
 
+def EMA3(_symbol, _interval, _lenght = 8, _lenght2 = 34, _lenght3 = 89):
+    df = ReadDataSource(_symbol, _interval)
+    emaValue = ta.ema(df['Close'], length= _lenght)
+    emaValue2 = ta.ema(df['Close'], length= _lenght2)
+    emaValue3 = ta.ema(df['Close'], length= _lenght3)
+    if emaValue > emaValue2 and emaValue2 > emaValue3:
+        return 'TrendUp'
+    elif emaValue < emaValue2 and emaValue2 < emaValue3:
+        return 'TrendDown'
+    else:
+        return 'TrendNone'
+
 def IFTRSI(_symbol, _interval, _rsiLenght = 5, _wmaLenght = 9):
     df = ReadDataSource(_symbol, _interval)
     v1 = 0.1 * (ta.rsi(df['Close'], length= _rsiLenght) - 50)
@@ -51,5 +63,8 @@ def MavilimW(_symbol, _interval, _fmal = 3, _smal = 5):
     isSell = MAVW < MAVW[1]
     return MAVW, isBuy, isSell
     
-
+def ATR(_symbol, _interval, _lenght = 14):
+    df = ReadDataSource(_symbol, _interval)
+    atrValue = ta.atr(df['High'], df['Low'], df['Close'], length= _lenght)
+    return atrValue
 

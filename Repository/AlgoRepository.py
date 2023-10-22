@@ -10,10 +10,10 @@ with open('Config/config.json', 'r') as f:
 T = TypeVar('T')
 
 class GenericMongoRepository(Generic[T]):
-    def __init__(self, _exchange : str, _symbol: str, _interval : str, model: Type[T]):
+    def __init__(self, _collection : str, _exchange : str, _symbol: str, _interval : str, model: Type[T]):
         self.client = MongoClient(config['ConnectionStrings']['mongodb'])
-        self.db = self.client[config['ConnectionStrings']['KlineDB']]
-        self.collection = self.db[f'{_exchange}_{_symbol}_{_interval}']
+        self.db = self.client[config['ConnectionStrings']['AlgoDB']]
+        self.collection = self.db[f'{_collection}']
         self.model = model
         self.collection.create_indexes([IndexModel([("OpenTime", ASCENDING)], unique=True)])
 
@@ -31,22 +31,13 @@ class GenericMongoRepository(Generic[T]):
             return []
     
     def GetDataWithDate(self, _startDate, _endDate) -> List[T]:
-        try:
-            cursor = self.collection.find({'OpenTime': {'$gte': _startDate, '$lte': _endDate}})
-            return [self.model(**item) for item in cursor]
-        except:
-            return None
+        cursor = self.collection.find({'OpenTime': {'$gte': _startDate, '$lte': _endDate}})
+        return [self.model(**item) for item in cursor]
     
     def GetLastKline(self) -> T:
-        try:
-            cursor = self.collection.find({}).sort('OpenTime', -1).limit(1)
-            return self.model(**cursor[0])
-        except:
-            return None
+        cursor = self.collection.find({}).sort('OpenTime', -1).limit(1)
+        return self.model(**cursor[0])
     
     def GetAll(self) -> T:
-        try:
-            cursor = self.collection.find({}).sort('OpenTime', 1)
-            return [self.model(**item) for item in cursor]
-        except:
-            return None
+        cursor = self.collection.find({}).sort('OpenTime', 1)
+        return [self.model(**item) for item in cursor]

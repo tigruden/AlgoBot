@@ -3,6 +3,7 @@
         "./Libs",
         "./Services",
         "./Repository",
-        "./Models"
+        "./Models",
+        "./Bot"
     ]
 }
